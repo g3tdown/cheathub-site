@@ -1,4 +1,3 @@
-/* === ОСНОВНОЙ СТИЛЬ === */
 body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
@@ -10,7 +9,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
   transition: background 0.3s;
 }
 
@@ -32,17 +30,21 @@ header {
 
 header h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 26px;
 }
 
-nav a {
+nav button {
+  background: none;
+  border: none;
   color: #ddd;
   margin-left: 20px;
-  text-decoration: none;
+  cursor: pointer;
+  font-size: 15px;
   transition: color 0.3s, transform 0.2s;
 }
 
-nav a:hover {
+nav button:hover,
+nav button.active {
   color: #fff;
   transform: scale(1.1);
 }
@@ -52,28 +54,36 @@ main {
   padding: 40px;
 }
 
+.tab-content {
+  display: block;
+  animation: fade 0.5s ease;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 section {
-  margin-bottom: 60px;
   background: rgba(0, 0, 0, 0.55);
   padding: 25px;
   border-radius: 16px;
   box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
   backdrop-filter: blur(6px);
-}
-
-h2 {
-  margin-top: 0;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  padding-bottom: 10px;
+  margin-bottom: 40px;
 }
 
 button {
   background: #c00;
   border: none;
-  padding: 14px 28px;
-  border-radius: 10px;
+  padding: 12px 24px;
+  border-radius: 8px;
   color: #fff;
-  font-size: 16px;
+  font-size: 15px;
   cursor: pointer;
   transition: transform 0.2s, background 0.3s;
 }
@@ -83,7 +93,6 @@ button:hover {
   transform: scale(1.05);
 }
 
-/* Анимация ошибки кнопки */
 button.shake {
   animation: shake 0.4s;
 }
@@ -95,26 +104,13 @@ button.shake {
   75% { transform: translateX(-5px); }
 }
 
-/* Подвал */
 footer {
   text-align: center;
   padding: 20px;
   background: rgba(0,0,0,0.7);
 }
 
-/* Анимации появления */
-.fade-in {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* === МОДАЛЬНОЕ ОКНО === */
+/* Модальное окно */
 .modal {
   display: none;
   position: fixed;
@@ -133,6 +129,7 @@ footer {
   text-align: center;
   box-shadow: 0 0 20px rgba(255,0,0,0.3);
   animation: popin 0.4s ease;
+  position: relative;
 }
 
 @keyframes popin {
@@ -153,5 +150,3 @@ footer {
 .close-btn:hover {
   color: #fff;
 }
-
-
