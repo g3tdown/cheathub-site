@@ -1,113 +1,46 @@
 body {
-  margin: 0;
+  margin:0;
   font-family: 'Segoe UI', Arial, sans-serif;
-  color: #fff;
-  background: linear-gradient(135deg, #000, #800);
+  color:#fff;
+  background: linear-gradient(135deg,#000,#800);
   background-size: cover;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
   transition: background 0.3s;
 }
-
 .overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  z-index: -1;
-}
-
-/* Панель инструментов сверху */
-.toolbar {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-  z-index: 10;
-}
-
-.toolbar button {
-  background: #222;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.toolbar button:hover {
-  background: #c00;
-  transform: scale(1.05);
-}
-
-/* Куб по центру */
-.cube {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.7);
-  padding: 50px 80px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 0 30px rgba(255,0,0,0.4);
-}
-
-.cube-text {
-  font-size: 32px;
-  font-weight: bold;
-}
-
-/* Вкладки */
-.tab-content {
-  display: block;
-  animation: fade 0.5s ease;
-}
-
-.hidden { display: none; }
-
-@keyframes fade {
-  from { opacity:0; transform:translateY(10px);}
-  to {opacity:1; transform:translateY(0);}
-}
-
-/* Модальное окно */
-.modal {
-  display: none;
-  position: fixed;
+  position:fixed;
   inset:0;
-  background: rgba(0,0,0,0.7);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  background:rgba(0,0,0,0.65);
+  z-index:-1;
 }
 
-.modal-content {
-  background:#111;
-  padding:25px;
-  border-radius:12px;
-  max-width:400px;
-  text-align:center;
-  box-shadow:0 0 20px rgba(255,0,0,0.3);
-  position: relative;
+.toolbar {
+  position:absolute;
+  top:10px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:10px;z-index:10;
 }
-
-.close-btn {
-  position: absolute;
-  top:15px;
-  right:20px;
-  font-size:24px;
-  cursor:pointer;
-  color:#f55;
-}
-
-.close-btn:hover { color:#fff; }
-
-/* Аккаунты по рангу */
-.rank-Creator { color: gold; }
-.rank-Moderator { color: cyan; }
-.rank-User { color: lightgreen; }
-
+.toolbar button {background:#222;border:none;padding:10px 15px;border-radius:6px;cursor:pointer;transition:.2s;}
+.toolbar button:hover,.toolbar button.active{background:#c00;transform:scale(1.05);}
+.cube {position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.7);padding:50px 80px;border-radius:16px;text-align:center;box-shadow:0 0 30px rgba(255,0,0,0.4);}
+.cube-text{font-size:32px;font-weight:bold;}
+.tab-content{display:block;animation:fade .5s ease;}
+.hidden{display:none;}
+@keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:1000;}
+.modal-content{background:#111;padding:25px;border-radius:12px;max-width:400px;text-align:center;box-shadow:0 0 20px rgba(255,0,0,0.3);position:relative;}
+.close-btn{position:absolute;top:15px;right:20px;font-size:24px;cursor:pointer;color:#f55;}
+.close-btn:hover{color:#fff;}
+.social a{margin-right:10px;color:#fff;text-decoration:none;}
+.social a:hover{color:#c00;}
+.rank-Owner{color:gold;}
+.rank-Admin{color:cyan;}
+.rank-Mod{color:orange;}
+.rank-Coder{color:lightgreen;}
+.rank-User{color:gray;}
+input{padding:8px;margin:5px 0;border-radius:6px;border:none;width:70%;}
+button.auth-btn{margin-top:5px;background:#c00;color:#fff;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;}
