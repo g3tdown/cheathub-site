@@ -11,43 +11,37 @@
 
 <div class="overlay"></div>
 
-<!-- Панель инструментов -->
+<div class="logo">
+  <h1>Better Client</h1>
+</div>
+
 <div class="toolbar">
   <button data-tab="home"><i class="fa-solid fa-house"></i> Главная</button>
   <button data-tab="account"><i class="fa-solid fa-user"></i> Аккаунт</button>
   <button data-tab="admin"><i class="fa-solid fa-shield"></i> Админ</button>
 </div>
 
-<!-- Центральный куб -->
-<div class="cube">
-  <div class="cube-text">Better Client</div>
-</div>
-
 <main>
-  <!-- Главная -->
   <section id="home" class="tab-content">
     <h2>Информация о клиенте</h2>
     <p>Better Client — безопасный, быстрый и современный клиент.</p>
     <div class="social">
-      <a href="#" target="_blank"><i class="fa-brands fa-twitter"></i> Twitter</a>
-      <a href="#" target="_blank"><i class="fa-brands fa-discord"></i> Discord</a>
-      <a href="#" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+      <a href="#"><i class="fa-brands fa-twitter"></i> Twitter</a>
+      <a href="#"><i class="fa-brands fa-discord"></i> Discord</a>
+      <a href="#"><i class="fa-brands fa-github"></i> GitHub</a>
     </div>
   </section>
 
-  <!-- Аккаунт -->
   <section id="account" class="tab-content hidden">
     <div id="auth-area"></div>
   </section>
 
-  <!-- Админка -->
   <section id="admin" class="tab-content hidden">
     <h2>Админ-панель</h2>
     <div id="admin-area"></div>
   </section>
 </main>
 
-<!-- Модальное окно -->
 <div class="modal" id="modal">
   <div class="modal-content">
     <span class="close-btn" id="close-modal">&times;</span>
