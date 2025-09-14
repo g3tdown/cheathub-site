@@ -2,119 +2,83 @@ body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
   color: #fff;
-  background: linear-gradient(135deg, #000000, #800000);
-  background-image: url("bg.png"), linear-gradient(135deg, #000000, #800000);
-  background-repeat: no-repeat;
+  background: linear-gradient(135deg, #000, #800);
   background-size: cover;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   transition: background 0.3s;
 }
 
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0,0,0,0.65);
   z-index: -1;
 }
 
-header {
-  background: rgba(0, 0, 0, 0.7);
-  padding: 15px 30px;
+/* Панель инструментов сверху */
+.toolbar {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  backdrop-filter: blur(6px);
+  gap: 10px;
+  z-index: 10;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 26px;
-}
-
-nav button {
-  background: none;
+.toolbar button {
+  background: #222;
   border: none;
-  color: #ddd;
-  margin-left: 20px;
+  padding: 10px 15px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 15px;
-  transition: color 0.3s, transform 0.2s;
+  transition: 0.2s;
 }
 
-nav button:hover,
-nav button.active {
-  color: #fff;
-  transform: scale(1.1);
+.toolbar button:hover {
+  background: #c00;
+  transform: scale(1.05);
 }
 
-main {
-  flex: 1;
-  padding: 40px;
+/* Куб по центру */
+.cube {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.7);
+  padding: 50px 80px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(255,0,0,0.4);
 }
 
+.cube-text {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+/* Вкладки */
 .tab-content {
   display: block;
   animation: fade 0.5s ease;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
 @keyframes fade {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-section {
-  background: rgba(0, 0, 0, 0.55);
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
-  backdrop-filter: blur(6px);
-  margin-bottom: 40px;
-}
-
-button {
-  background: #c00;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 15px;
-  cursor: pointer;
-  transition: transform 0.2s, background 0.3s;
-}
-
-button:hover {
-  background: #e00;
-  transform: scale(1.05);
-}
-
-button.shake {
-  animation: shake 0.4s;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-}
-
-footer {
-  text-align: center;
-  padding: 20px;
-  background: rgba(0,0,0,0.7);
+  from { opacity:0; transform:translateY(10px);}
+  to {opacity:1; transform:translateY(0);}
 }
 
 /* Модальное окно */
 .modal {
   display: none;
   position: fixed;
-  inset: 0;
+  inset:0;
   background: rgba(0,0,0,0.7);
   justify-content: center;
   align-items: center;
@@ -122,31 +86,28 @@ footer {
 }
 
 .modal-content {
-  background: #111;
-  padding: 25px;
-  border-radius: 12px;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 0 20px rgba(255,0,0,0.3);
-  animation: popin 0.4s ease;
+  background:#111;
+  padding:25px;
+  border-radius:12px;
+  max-width:400px;
+  text-align:center;
+  box-shadow:0 0 20px rgba(255,0,0,0.3);
   position: relative;
-}
-
-@keyframes popin {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
 }
 
 .close-btn {
   position: absolute;
-  top: 15px;
-  right: 20px;
-  font-size: 24px;
-  cursor: pointer;
-  color: #f55;
-  transition: color 0.3s;
+  top:15px;
+  right:20px;
+  font-size:24px;
+  cursor:pointer;
+  color:#f55;
 }
 
-.close-btn:hover {
-  color: #fff;
-}
+.close-btn:hover { color:#fff; }
+
+/* Аккаунты по рангу */
+.rank-Creator { color: gold; }
+.rank-Moderator { color: cyan; }
+.rank-User { color: lightgreen; }
+
