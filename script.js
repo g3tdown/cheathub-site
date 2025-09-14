@@ -17,7 +17,7 @@ function showModal(msg) { modalText.textContent = msg; modal.style.display = "fl
 
 // ======== LocalStorage аккаунты ========
 let accounts = JSON.parse(localStorage.getItem("betterClientAccounts")) || [];
-if (accounts.length === 0) { // если пусто, создаем дефолтные аккаунты
+if (accounts.length === 0) {
     accounts = [
         { id: 1, username: "Owner", password: "owner123", rank: "Owner", date: new Date().toLocaleString() },
         { id: 2, username: "Mod", password: "mod123", rank: "Mod", date: new Date().toLocaleString() },
@@ -31,9 +31,38 @@ window.giveAdmin = (nick, rank) => {
     const user = accounts.find(a => a.username.toLowerCase() === nick.toLowerCase());
     if (!user) { console.warn("Пользователь не найден"); return; }
     user.rank = rank;
-    localStorage.setItem("betterClientAccounts", JSON.stringify(accounts));
+    saveAccounts();
     console.log(`Пользователю ${nick} выдан ранг ${rank}`);
+    renderAuth();
+    renderAdmin();
 };
+
+// ======== Изменение ника через DevTools ========
+window.changeNick = (oldNick, newNick) => {
+    if (!/^[A-Za-z]+$/.test(newNick)) { console.warn("Ник должен быть на английском!"); return; }
+    if (accounts.some(a => a.username.toLowerCase() === newNick.toLowerCase())) { console.warn("Ник уже занят!"); return; }
+    const user = accounts.find(a => a.username.toLowerCase() === oldNick.toLowerCase());
+    if (!user) { console.warn("Пользователь не найден"); return; }
+    user.username = newNick;
+    saveAccounts();
+    console.log(`Ник пользователя ${oldNick} изменён на ${newNick}`);
+    renderAuth();
+    renderAdmin();
+};
+
+// ======== Смена пароля через DevTools ========
+window.changePassword = (nick, newPass) => {
+    const user = accounts.find(a => a.username.toLowerCase() === nick.toLowerCase());
+    if (!user) { console.warn("Пользователь не найден"); return; }
+    user.password = newPass;
+    saveAccounts();
+    console.log(`Пароль пользователя ${nick} изменён`);
+};
+
+// ======== Сохранение аккаунтов ========
+function saveAccounts() {
+    localStorage.setItem("betterClientAccounts", JSON.stringify(accounts));
+}
 
 // ======== SPA вкладки ========
 const tabButtons = document.querySelectorAll(".toolbar button");
@@ -102,7 +131,7 @@ function renderRegister() {
         const id = accounts.length ? accounts[accounts.length - 1].id + 1 : 1;
         const newAcc = { id, username: nick, password: pass, rank: "User", date: new Date().toLocaleString() };
         accounts.push(newAcc);
-        localStorage.setItem("betterClientAccounts", JSON.stringify(accounts));
+        saveAccounts();
         currentUser = newAcc;
         localStorage.setItem("betterClientAccount", JSON.stringify(currentUser));
         renderAuth();
@@ -155,3 +184,4 @@ function renderAdmin() {
 // ======== Инициализация ========
 renderAuth();
 renderAdmin();
+
