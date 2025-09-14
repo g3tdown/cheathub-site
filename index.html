@@ -8,42 +8,54 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-  <div class="overlay"></div>
 
-  <!-- Панель инструментов сверху -->
-  <div class="toolbar">
-    <button data-tab="account"><i class="fa-solid fa-user"></i> Аккаунт</button>
-    <button data-tab="tools"><i class="fa-solid fa-wrench"></i> Инструменты</button>
-  </div>
+<div class="overlay"></div>
 
-  <!-- Куб с текстом по центру -->
-  <div class="cube">
-    <div class="cube-text">Better Client</div>
-  </div>
+<!-- Панель инструментов -->
+<div class="toolbar">
+  <button data-tab="home"><i class="fa-solid fa-house"></i> Главная</button>
+  <button data-tab="account"><i class="fa-solid fa-user"></i> Аккаунт</button>
+  <button data-tab="admin"><i class="fa-solid fa-shield"></i> Админ</button>
+</div>
 
-  <!-- Основной контент -->
-  <main>
-    <section id="account" class="tab-content hidden">
-      <h2>Аккаунт</h2>
-      <div id="account-area"></div>
-    </section>
+<!-- Центральный куб -->
+<div class="cube">
+  <div class="cube-text">Better Client</div>
+</div>
 
-    <section id="tools" class="tab-content hidden">
-      <h2>Инструменты</h2>
-      <p>Здесь будут инструменты приложения.</p>
-    </section>
-  </main>
-
-  <!-- Модальное окно -->
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <span class="close-btn" id="close-modal">&times;</span>
-      <h3><i class="fa-solid fa-circle-exclamation"></i> Сообщение</h3>
-      <p id="modal-text"></p>
+<main>
+  <!-- Главная -->
+  <section id="home" class="tab-content">
+    <h2>Информация о клиенте</h2>
+    <p>Better Client — безопасный, быстрый и современный клиент.</p>
+    <div class="social">
+      <a href="#" target="_blank"><i class="fa-brands fa-twitter"></i> Twitter</a>
+      <a href="#" target="_blank"><i class="fa-brands fa-discord"></i> Discord</a>
+      <a href="#" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
     </div>
-  </div>
+  </section>
 
-  <script src="script.js"></script>
+  <!-- Аккаунт -->
+  <section id="account" class="tab-content hidden">
+    <div id="auth-area"></div>
+  </section>
+
+  <!-- Админка -->
+  <section id="admin" class="tab-content hidden">
+    <h2>Админ-панель</h2>
+    <div id="admin-area"></div>
+  </section>
+</main>
+
+<!-- Модальное окно -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="close-modal">&times;</span>
+    <h3><i class="fa-solid fa-circle-exclamation"></i> Сообщение</h3>
+    <p id="modal-text"></p>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
-
