@@ -1,12 +1,5 @@
 [
-  {
-    "username": "Spedak",
-    "password": "A14021402a",
-    "rank": "Создатель"
-  },
-  {
-    "username": "SSSk",
-    "password": "A14021402a",
-    "rank": "Модератор"
-  }
+  {"id":1,"username":"Owner","password":"owner123","rank":"Owner","date":"2025-09-14"},
+  {"id":2,"username":"Mod","password":"mod123","rank":"Mod","date":"2025-09-14"},
+  {"id":3,"username":"Coder","password":"code123","rank":"Coder","date":"2025-09-14"}
 ]
