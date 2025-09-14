@@ -5,38 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Better Client</title>
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
   <div class="overlay"></div>
 
   <header>
-    <h1>Better Client</h1>
+    <h1><i class="fa-solid fa-bolt"></i> Better Client</h1>
     <nav>
-      <a href="#about">О нас</a>
-      <a href="#features">Функции</a>
-      <a href="#download">Скачать</a>
+      <a href="#about"><i class="fa-solid fa-circle-info"></i> О нас</a>
+      <a href="#features"><i class="fa-solid fa-star"></i> Функции</a>
+      <a href="#download"><i class="fa-solid fa-download"></i> Скачать</a>
     </nav>
   </header>
 
   <main>
     <section id="about" class="fade-in">
-      <h2>О проекте</h2>
+      <h2><i class="fa-solid fa-circle-info"></i> О проекте</h2>
       <p>Better Client — это современный клиент с улучшенным интерфейсом и функциями, созданный для удобства и производительности.</p>
     </section>
 
     <section id="features" class="fade-in">
-      <h2>Особенности</h2>
+      <h2><i class="fa-solid fa-star"></i> Особенности</h2>
       <ul>
-        <li>⚡ Высокая скорость работы</li>
-        <li>🎨 Тёмный минималистичный дизайн</li>
-        <li>🔒 Повышенная безопасность</li>
+        <li><i class="fa-solid fa-gauge-high"></i> Высокая скорость работы</li>
+        <li><i class="fa-solid fa-moon"></i> Тёмный минималистичный дизайн</li>
+        <li><i class="fa-solid fa-shield-halved"></i> Повышенная безопасность</li>
       </ul>
     </section>
 
     <section id="download" class="fade-in">
-      <h2>Скачать</h2>
+      <h2><i class="fa-solid fa-download"></i> Скачать</h2>
       <p>Скоро доступно для Windows, macOS и Linux.</p>
-      <button onclick="alert('Скоро релиз!')">Скачать</button>
+      <button id="download-btn"><i class="fa-solid fa-download"></i> Скачать</button>
     </section>
   </main>
 
@@ -44,6 +47,16 @@
     <p>© 2025 Better Client</p>
   </footer>
 
+  <!-- Модальное окно -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="close-modal">&times;</span>
+      <h3><i class="fa-solid fa-circle-exclamation"></i> Внимание</h3>
+      <p id="modal-text">Текст сообщения...</p>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
+
