@@ -1,93 +1,91 @@
-// === Переключение вкладок ===
-const tabButtons = document.querySelectorAll(".tab-btn");
+// ======== Куб динамика / фон ========
+document.addEventListener("mousemove", e=>{
+  const x = e.clientX/window.innerWidth;
+  const y = e.clientY/window.innerHeight;
+  const red = Math.floor(128+127*x);
+  const black = Math.floor(50+50*(1-y));
+  document.body.style.background = `linear-gradient(135deg, rgb(${black},0,0), rgb(${red},0,0))`;
+});
+
+// ======== Панель вкладок ========
+const tabButtons = document.querySelectorAll(".toolbar button");
 const tabContents = document.querySelectorAll(".tab-content");
 
-tabButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    tabButtons.forEach(b => b.classList.remove("active"));
+tabButtons.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    tabButtons.forEach(b=>b.classList.remove("active"));
     btn.classList.add("active");
 
-    const tabId = btn.dataset.tab;
-    tabContents.forEach(c => {
+    const tab = btn.dataset.tab;
+    tabContents.forEach(c=>{
       c.classList.add("hidden");
-      if (c.id === tabId) c.classList.remove("hidden");
+      if(c.id===tab) c.classList.remove("hidden");
     });
   });
 });
 
-// === Модальное окно ===
-const modal = document.getElementById("modal");
-const modalText = document.getElementById("modal-text");
-const closeModal = document.getElementById("close-modal");
-const downloadBtn = document.getElementById("download-btn");
+// ======== Модальное окно ========
+const modal=document.getElementById("modal");
+const modalText=document.getElementById("modal-text");
+const closeModal=document.getElementById("close-modal");
+closeModal.addEventListener("click",()=>modal.style.display="none");
+window.addEventListener("click", e=>{if(e.target===modal) modal.style.display="none";});
 
-downloadBtn.addEventListener("click", () => {
-  modalText.textContent = "Скоро релиз! 🚀";
-  modal.style.display = "flex";
-});
+// ======== Локальные аккаунты ========
+let accounts=[
+  {username:"Creator",password:"123",rank:"Creator"},
+  {username:"Mod",password:"modpass",rank:"Moderator"}
+]; // можно эмулировать fetch из JSON
 
-closeModal.addEventListener("click", () => {
-  modal.style.display = "none";
-});
+const accountArea=document.getElementById("account-area");
 
-window.addEventListener("click", (e) => {
-  if (e.target === modal) modal.style.display = "none";
-});
+function isValidNick(nick){
+  return /^[A-Za-z]+$/.test(nick);
+}
 
-// === Ошибка кнопки (пример) ===
-downloadBtn.addEventListener("contextmenu", (e) => {
-  e.preventDefault();
-  downloadBtn.classList.add("shake");
-  setTimeout(() => downloadBtn.classList.remove("shake"), 400);
-});
+function isUniqueNick(nick){
+  return !accounts.some(acc=>acc.username.toLowerCase()===nick.toLowerCase());
+}
 
-// === Локальный аккаунт ===
-const accountArea = document.getElementById("account-area");
-
-function loadAccount() {
-  const account = JSON.parse(localStorage.getItem("betterClientAccount"));
-  if (account) {
-    accountArea.innerHTML = `
-      <p><i class="fa-solid fa-user"></i> Логин: <b>${account.username}</b></p>
-      <p><i class="fa-solid fa-calendar"></i> Дата регистрации: ${account.date}</p>
+function renderAccountArea(){
+  const acc=JSON.parse(localStorage.getItem("betterClientAccount"));
+  if(acc){
+    const rankClass = `rank-${acc.rank}`;
+    accountArea.innerHTML=`
+      <p>Ник: <b>${acc.username}</b></p>
+      <p>Ранг: <b class="${rankClass}">${acc.rank}</b></p>
+      <p>Дата регистрации: ${acc.date}</p>
       <button id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Выйти</button>
     `;
-    document.getElementById("logout-btn").addEventListener("click", () => {
+    document.getElementById("logout-btn").addEventListener("click", ()=>{
       localStorage.removeItem("betterClientAccount");
-      loadAccount();
+      renderAccountArea();
     });
   } else {
-    accountArea.innerHTML = `
-      <p>Создайте аккаунт:</p>
-      <input type="text" id="username-input" placeholder="Введите логин">
+    accountArea.innerHTML=`
+      <p>Регистрация:</p>
+      <input type="text" id="nick-input" placeholder="Ник (только английские буквы)">
+      <input type="password" id="pass-input" placeholder="Пароль">
       <button id="register-btn"><i class="fa-solid fa-user-plus"></i> Зарегистрироваться</button>
     `;
-    document.getElementById("register-btn").addEventListener("click", () => {
-      const username = document.getElementById("username-input").value.trim();
-      if (!username) {
-        modalText.textContent = "Введите имя!";
-        modal.style.display = "flex";
-        return;
-      }
-      const date = new Date().toLocaleString();
-      const newAccount = { username, date };
-      localStorage.setItem("betterClientAccount", JSON.stringify(newAccount));
-      loadAccount();
+    document.getElementById("register-btn").addEventListener("click", ()=>{
+      const nick=document.getElementById("nick-input").value.trim();
+      const pass=document.getElementById("pass-input").value.trim();
+      if(!nick || !pass){showModal("Введите ник и пароль!"); return;}
+      if(!isValidNick(nick)){showModal("Ник только на английском!"); return;}
+      if(!isUniqueNick(nick)){showModal("Ник уже существует!"); return;}
+      const date=new Date().toLocaleString();
+      const newAcc={username:nick,password:pass,rank:"User",date};
+      accounts.push(newAcc);
+      localStorage.setItem("betterClientAccount",JSON.stringify(newAcc));
+      renderAccountArea();
     });
   }
 }
 
-loadAccount();
+function showModal(msg){
+  modalText.textContent=msg;
+  modal.style.display="flex";
+}
 
-// === Фон, реагирующий на курсор ===
-document.addEventListener("mousemove", (e) => {
-  const x = e.clientX / window.innerWidth;
-  const y = e.clientY / window.innerHeight;
-  const red = Math.floor(128 + 127 * x);
-  const black = Math.floor(50 + 50 * (1 - y));
-
-  document.body.style.background = `linear-gradient(135deg, rgb(${black},0,0), rgb(${red},0,0))`;
-  if (document.body.style.backgroundImage.includes("bg.png")) {
-    document.body.style.backgroundImage = `url("bg.png"), linear-gradient(135deg, rgb(${black},0,0), rgb(${red},0,0))`;
-  }
-});
+renderAccountArea();
