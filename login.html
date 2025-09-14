@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Better Client</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="overlay"></div>
+<div class="logo"><h1>Better Client</h1></div>
+
+<div class="auth-page">
+  <h2>Вход в аккаунт</h2>
+  <input id="login-nick" placeholder="Ник"/>
+  <input id="login-pass" type="password" placeholder="Пароль"/>
+  <button id="login-btn" class="auth-btn">Войти</button>
+  <p>Нет аккаунта? <a href="register.html">Регистрация</a></p>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="close-modal">&times;</span>
+    <h3><i class="fa-solid fa-circle-exclamation"></i> Сообщение</h3>
+    <p id="modal-text"></p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
