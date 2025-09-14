@@ -1,41 +1,33 @@
-/* Общий стиль */
+/* === ОСНОВНОЙ СТИЛЬ === */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
   color: #fff;
-
-  /* fallback: градиент + опционально bg.png */
   background: linear-gradient(135deg, #000000, #800000);
   background-image: url("bg.png"), linear-gradient(135deg, #000000, #800000);
   background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
   background-size: cover;
-
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  position: relative;
+  overflow-x: hidden;
+  transition: background 0.3s;
 }
 
-/* затемняющий слой */
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
   z-index: -1;
 }
 
-/* шапка */
 header {
   background: rgba(0, 0, 0, 0.7);
   padding: 15px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  backdrop-filter: blur(6px);
 }
 
 header h1 {
@@ -47,14 +39,14 @@ nav a {
   color: #ddd;
   margin-left: 20px;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color 0.3s, transform 0.2s;
 }
 
 nav a:hover {
   color: #fff;
+  transform: scale(1.1);
 }
 
-/* контент */
 main {
   flex: 1;
   padding: 40px;
@@ -62,42 +54,55 @@ main {
 
 section {
   margin-bottom: 60px;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+  backdrop-filter: blur(6px);
 }
 
-/* заголовки */
 h2 {
   margin-top: 0;
   border-bottom: 1px solid rgba(255,255,255,0.2);
   padding-bottom: 10px;
 }
 
-/* кнопка */
 button {
-  background: #444;
+  background: #c00;
   border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
+  padding: 14px 28px;
+  border-radius: 10px;
   color: #fff;
   font-size: 16px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: transform 0.2s, background 0.3s;
 }
 
 button:hover {
-  background: #666;
+  background: #e00;
+  transform: scale(1.05);
 }
 
-/* подвал */
+/* Анимация ошибки кнопки */
+button.shake {
+  animation: shake 0.4s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+}
+
+/* Подвал */
 footer {
   text-align: center;
   padding: 20px;
   background: rgba(0,0,0,0.7);
 }
 
-/* анимации появления */
+/* Анимации появления */
 .fade-in {
   opacity: 0;
   transform: translateY(30px);
@@ -108,4 +113,45 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* === МОДАЛЬНОЕ ОКНО === */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #111;
+  padding: 25px;
+  border-radius: 12px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255,0,0,0.3);
+  animation: popin 0.4s ease;
+}
+
+@keyframes popin {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #f55;
+  transition: color 0.3s;
+}
+
+.close-btn:hover {
+  color: #fff;
+}
+
 
