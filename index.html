@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SimpleForum</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>SimpleForum</h1>
+    <nav>
+      <button id="btn-show-login">Войти</button>
+      <button id="btn-show-register">Регистрация</button>
+      <button id="btn-logout" style="display:none;">Выйти</button>
+      <span id="user-info"></span>
+    </nav>
+  </header>
+
+  <main>
+    <section id="auth-section">
+      <div id="register-card" class="card hidden">
+        <h2>Регистрация</h2>
+        <input id="reg-username" placeholder="Имя пользователя" />
+        <input id="reg-password" type="password" placeholder="Пароль" />
+        <button id="reg-submit">Зарегистрироваться</button>
+        <div class="msg" id="reg-msg"></div>
+      </div>
+
+      <div id="login-card" class="card hidden">
+        <h2>Вход</h2>
+        <input id="login-username" placeholder="Имя пользователя" />
+        <input id="login-password" type="password" placeholder="Пароль" />
+        <button id="login-submit">Войти</button>
+        <div class="msg" id="login-msg"></div>
+      </div>
+    </section>
+
+    <section id="forum-section">
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Темы</h2>
+          <button id="btn-new-topic" class="primary" style="display:none;">Создать тему</button>
+        </div>
+        <ul id="topics-list"></ul>
+      </div>
+
+      <div class="panel" id="topic-view" style="display:none;">
+        <button id="back-to-topics">← Назад</button>
+        <h2 id="topic-title"></h2>
+        <div id="posts-list"></div>
+
+        <div id="new-post-card" class="card hidden">
+          <h3>Ответить</h3>
+          <textarea id="post-content" placeholder="Текст сообщения"></textarea>
+          <button id="post-submit">Отправить</button>
+          <div class="msg" id="post-msg"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <template id="topic-item-tpl">
+    <li class="topic-item">
+      <a href="#" class="topic-link"></a>
+      <span class="meta"></span>
+    </li>
+  </template>
+
+  <template id="post-tpl">
+    <div class="post">
+      <div class="post-meta"></div>
+      <div class="post-body"></div>
+    </div>
+  </template>
+
+  <script>
+    const API_ROOT = '/api';
+
+    // Simple UI helpers
+    const el = id => document.getElementById(id);
+    const show = (el) => { el.classList.remove('hidden'); el.style.display = ''; };
+    const hide = (el) => { el.classList.add('hidden'); el.style.display = 'none'; }
+
+    // Auth state
+    let token = localStorage.getItem('sf_token') || null;
+    let me = null;
+
+    async function api(path, method='GET', body=null, auth=true) {
+      const headers = { 'Accept': 'application/json' };
+      if (body && !(body instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+        body = JSON.stringify(body);
+      }
+      if (auth && token) headers['Authorization'] = 'Bearer ' + token;
+      const res = await fetch(API_ROOT + path, { method, headers, body });
+      const data = await res.json().catch(()=>({}));
+      if (!res.ok) throw { status: res.status, data };
+      return data;
+    }
+
+    // Show/hide panels
+    function showLogin() { hide(el('register-card')); show(el('login-card')); }
+    function showRegister(){ hide(el('login-card')); show(el('register-card')); }
+    function showAuthButtons(logged){
+      if (logged) {
+        hide(el('btn-show-login')); hide(el('btn-show-register'));
+        show(el('btn-logout')); show(el('btn-new-topic'));
+      } else {
+        show(el('btn-show-login')); show(el('btn-show-register'));
+        hide(el('btn-logout')); hide(el('btn-new-topic'));
+      }
+    }
+
+    // Load topics
+    async function loadTopics() {
+      try {
+        const data = await api('/topics', 'GET', null, false);
+        const list = el('topics-list');
+        list.innerHTML = '';
+        const tpl = document.getElementById('topic-item-tpl');
+        data.topics.forEach(t => {
+          const node = tpl.content.cloneNode(true);
+          const a = node.querySelector('.topic-link');
+          a.textContent = t.title;
+          a.href = '#';
+          a.onclick = (ev) => { ev.preventDefault(); openTopic(t.id); };
+          node.querySelector('.meta').textContent = ` автор: ${t.author} • ${new Date(t.created_at).toLocaleString()}`;
+          list.appendChild(node);
+        });
+      } catch(e) {
+        console.error(e);
+      }
+    }
+
+    async function openTopic(id) {
+      try {
+        const data = await api('/topics/' + id, 'GET', null, false);
+        el('topic-title').textContent = data.topic.title;
+        const postsList = el('posts-list');
+        postsList.innerHTML = '';
+        const tpl = document.getElementById('post-tpl');
+        data.posts.forEach(p => {
+          const node = tpl.content.cloneNode(true);
+          node.querySelector('.post-meta').textContent = `${p.author} • ${new Date(p.created_at).toLocaleString()}`;
+          node.querySelector('.post-body').textContent = p.content;
+          postsList.appendChild(node);
+        });
+        show(el('topic-view'));
+        hide(el('forum-section').querySelector('.panel')); // hide topics panel visually
+        if (me) show(el('new-post-card')); else hide(el('new-post-card'));
+        el('post-submit').onclick = async () => {
+          const content = el('post-content').value.trim();
+          if (!content) { el('post-msg').textContent = 'Введите текст'; return; }
+          try {
+            await api('/topics/' + id + '/posts', 'POST', { content });
+            el('post-content').value = '';
+            el('post-msg').textContent = 'Отправлено';
+            openTopic(id); // reload
+          } catch(err) {
+            el('post-msg').textContent = err.data?.message || 'Ошибка';
+          }
+        };
+      } catch(e) {
+        console.error(e);
+      }
+    }
+
+    // Back
+    el('back-to-topics').onclick = () => {
+      hide(el('topic-view'));
+      show(el('forum-section').querySelector('.panel'));
+      loadTopics();
+    };
+
+    // Register / login
+    el('reg-submit').onclick = async () => {
+      const username = el('reg-username').value.trim();
+      const password = el('reg-password').value;
+      try {
+        const res = await api('/auth/register', 'POST', { username, password }, false);
+        el('reg-msg').textContent = 'Готово. Войдите.';
+      } catch (err) {
+        el('reg-msg').textContent = err.data?.message || 'Ошибка регистрации';
+      }
+    };
+
+    el('login-submit').onclick = async () => {
+      const username = el('login-username').value.trim();
+      const password = el('login-password').value;
+      try {
+        const res = await api('/auth/login', 'POST', { username, password }, false);
+        token = res.token;
+        localStorage.setItem('sf_token', token);
+        await fetchMe();
+        el('login-msg').textContent = 'Успешно';
+        hide(el('login-card')); hide(el('register-card'));
+      } catch (err) {
+        el('login-msg').textContent = err.data?.message || 'Ошибка входа';
+      }
+    };
+
+    el('btn-show-login').onclick = () => { showLogin(); };
+    el('btn-show-register').onclick = () => { showRegister(); };
+    el('btn-logout').onclick = () => {
+      token = null; me = null; localStorage.removeItem('sf_token');
+      el('user-info').textContent = '';
+      showAuthButtons(false);
+      loadTopics();
+    };
+
+    // Create topic
+    el('btn-new-topic').onclick = async () => {
+      const title = prompt('Название темы:');
+      if (!title) return;
+      try {
+        const res = await api('/topics', 'POST', { title });
+        await loadTopics();
+      } catch (err) {
+        alert(err.data?.message || 'Ошибка создания темы');
+      }
+    };
+
+    async function fetchMe() {
+      if (!token) { showAuthButtons(false); return; }
+      try {
+        const meRes = await api('/auth/me', 'GET', null, true);
+        me = meRes.user;
+        el('user-info').textContent = `Привет, ${me.username}`;
+        showAuthButtons(true);
+      } catch (e) {
+        token = null; localStorage.removeItem('sf_token');
+        showAuthButtons(false);
+      }
+    }
+
+    // On load
+    (async function init(){
+      await fetchMe();
+      loadTopics();
+    })();
+  </script>
+</body>
+</html>
