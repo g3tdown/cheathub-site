@@ -15,19 +15,20 @@
   <header>
     <h1><i class="fa-solid fa-bolt"></i> Better Client</h1>
     <nav>
-      <a href="#about"><i class="fa-solid fa-circle-info"></i> О нас</a>
-      <a href="#features"><i class="fa-solid fa-star"></i> Функции</a>
-      <a href="#download"><i class="fa-solid fa-download"></i> Скачать</a>
+      <button class="tab-btn" data-tab="about"><i class="fa-solid fa-circle-info"></i> О нас</button>
+      <button class="tab-btn" data-tab="features"><i class="fa-solid fa-star"></i> Функции</button>
+      <button class="tab-btn" data-tab="download"><i class="fa-solid fa-download"></i> Скачать</button>
+      <button class="tab-btn" data-tab="account"><i class="fa-solid fa-user"></i> Аккаунт</button>
     </nav>
   </header>
 
   <main>
-    <section id="about" class="fade-in">
+    <section id="about" class="tab-content">
       <h2><i class="fa-solid fa-circle-info"></i> О проекте</h2>
       <p>Better Client — это современный клиент с улучшенным интерфейсом и функциями, созданный для удобства и производительности.</p>
     </section>
 
-    <section id="features" class="fade-in">
+    <section id="features" class="tab-content hidden">
       <h2><i class="fa-solid fa-star"></i> Особенности</h2>
       <ul>
         <li><i class="fa-solid fa-gauge-high"></i> Высокая скорость работы</li>
@@ -36,10 +37,17 @@
       </ul>
     </section>
 
-    <section id="download" class="fade-in">
+    <section id="download" class="tab-content hidden">
       <h2><i class="fa-solid fa-download"></i> Скачать</h2>
       <p>Скоро доступно для Windows, macOS и Linux.</p>
       <button id="download-btn"><i class="fa-solid fa-download"></i> Скачать</button>
+    </section>
+
+    <section id="account" class="tab-content hidden">
+      <h2><i class="fa-solid fa-user"></i> Аккаунт</h2>
+      <div id="account-area">
+        <!-- Здесь будет форма или данные пользователя -->
+      </div>
     </section>
   </main>
 
@@ -51,7 +59,7 @@
   <div class="modal" id="modal">
     <div class="modal-content">
       <span class="close-btn" id="close-modal">&times;</span>
-      <h3><i class="fa-solid fa-circle-exclamation"></i> Внимание</h3>
+      <h3><i class="fa-solid fa-circle-exclamation"></i> Сообщение</h3>
       <p id="modal-text">Текст сообщения...</p>
     </div>
   </div>
@@ -59,4 +67,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
